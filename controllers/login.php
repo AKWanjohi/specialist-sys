@@ -29,9 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $statement->execute();
             $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['name'];
-            $_SESSION['user_type'] = $rank;
+            setSession($user['id'], $user['name'], $rank);
 
             header("Location: /");
         } else {

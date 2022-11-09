@@ -65,9 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $statement->bindValue(":user_id", $user_id);
         $statement->execute();
 
-        $_SESSION['user_id'] = $user_id;
-        $_SESSION['username'] = $_POST['username'];
-        $_SESSION['user_type'] = $user_type;
+        setSession($user_id, $_POST['username'], $user_type);
 
         header("Location: /");
     } else {
