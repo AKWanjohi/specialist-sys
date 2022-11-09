@@ -1,5 +1,22 @@
 <?php
 
-$dsn = 'mysql:' . http_build_query($config['database'], '', ';');
+class Database
+{
+    public $conn;
 
-$pdo = new PDO($dsn);
+    public function __construct($dsn)
+    {
+        $this->conn = new PDO($dsn);
+    }
+
+    public function getLogin($username)
+    {
+        $statement = $this->conn->prepare(
+            "SELECT * FROM login WHERE username=:username"
+        );
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+}

@@ -4,24 +4,19 @@ $message = "";
 $user_type = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $statement = $pdo->prepare(
-        "SELECT * FROM login WHERE username=:username"
-    );
-    $statement->bindValue(":username", $_POST['username']);
-    $statement->execute();
-    $login = $statement->fetch(PDO::FETCH_ASSOC);
-
-    $user_type = $_POST['user_type'];
+    $login = $db->getLogin();
 
     if (!$login) {
+        $user_type = $_POST['user_type'];
+
         if ($user_type == 'admin') {
-            $statement = $pdo->prepare(
+            $statement = $db->conn->prepare(
                 "INSERT INTO admin 
                 (name, mobile, email, gender) 
                 VALUES (:full_name, :mobile, :email, :gender)"
             );
         } elseif ($user_type == 'patient') {
-            $statement = $pdo->prepare(
+            $statement = $db->conn->prepare(
                 "INSERT INTO patient 
                 (name, mobile, email, gender, location, dob) 
                 VALUES (:full_name, :mobile, :email, :gender, :location, :dob)"
@@ -29,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $statement->bindValue(":location", $_POST['location']);
             $statement->bindValue(":dob", $_POST['dob']);
         } elseif ($user_type == 'specialist') {
-            $statement = $pdo->prepare(
+            $statement = $db->conn->prepare(
                 "INSERT INTO specialist 
                 (name, mobile, email, gender, location) 
                 VALUES (:full_name, :mobile, :email, :gender, :location)"
@@ -42,23 +37,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $statement->bindValue(":gender", $_POST['gender']);
         $statement->execute();
 
-        $user_id = $pdo->lastInsertId();
+        $user_id = $db->conn->lastInsertId();
 
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         if ($user_type == 'admin') {
-            $statement = $pdo->prepare(
+            $statement = $db->conn->prepare(
                 "INSERT INTO login 
                 (username, password, rank, admin_id) 
                 VALUES (:username, :password, :rank, :user_id)"
             );
         } elseif ($user_type == 'patient') {
-            $statement = $pdo->prepare(
+            $statement = $db->conn->prepare(
                 "INSERT INTO login 
                 (username, password, rank, patient_id) 
                 VALUES (:username, :password, :rank, :user_id)"
             );
         } elseif ($user_type == 'specialist') {
-            $statement = $pdo->prepare(
+            $statement = $db->conn->prepare(
                 "INSERT INTO login 
                 (username, password, rank, specialist_id) 
                 VALUES (:username, :password, :rank, :user_id)"
@@ -80,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+$user_type = $_POST['user_type'] ?? '';
 $full_name = $_POST['full_name'] ?? '';
 $username = $_POST['username'] ?? '';
 $mobile = $_POST['mobile'] ?? '';
@@ -88,7 +84,7 @@ $gender = $_POST['gender'] ?? '';
 $location = $_POST['location'] ?? '';
 $dob = $_POST['dob'] ?? '';
 
-$statement = $pdo->query(
+$statement = $db->conn->query(
     "SELECT * FROM admin LIMIT 1"
 );
 $admin = $statement->fetch(PDO::FETCH_ASSOC);

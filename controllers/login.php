@@ -4,12 +4,7 @@ $message = "";
 $username = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $statement = $pdo->prepare(
-        "SELECT * FROM login WHERE username=:username"
-    );
-    $statement->bindValue(":username", $_POST['username']);
-    $statement->execute();
-    $login = $statement->fetch(PDO::FETCH_ASSOC);
+    $login = $db->getLogin($_POST['username']);
 
     if ($login) {
         if (password_verify($_POST['password'], $login['password'])) {
@@ -18,15 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $rank = $login['rank'];
 
             if ($rank == 'admin') {
-                $statement = $pdo->prepare(
+                $statement = $db->conn->prepare(
                     "SELECT * FROM admin WHERE id=:id"
                 );
             } elseif ($rank == 'patient') {
-                $statement = $pdo->prepare(
+                $statement = $db->conn->prepare(
                     "SELECT * FROM patient WHERE id=:id"
                 );
             } elseif ($rank == 'specialist') {
-                $statement = $pdo->prepare(
+                $statement = $db->conn->prepare(
                     "SELECT * FROM specialist WHERE id=:id"
                 );
             }
