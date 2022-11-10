@@ -14,3 +14,18 @@ function checkIfLoggedIn()
         exit;
     }
 }
+
+function testInput($data)
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+function validateText($data)
+{
+    $data = testInput($data);
+
+    return !preg_match("/^[a-zA-Z-' ]*$/", $data);
+}
