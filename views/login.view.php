@@ -19,7 +19,12 @@
                 <label for="username" class="form-label fw-bold text-uppercase">Username:</label>
                 <div class="input-group">
                     <span class="input-group-text text-primary"><i class="fas fa-user"></i></span>
-                    <input type="text" name="username" id="username" class="form-control" value="<?php echo $username ?>" placeholder="Enter username" required>
+                    <input type="text" name="username" id="username" class="form-control <?= $usernameErr ? 'is-invalid' : '' ?>" value="<?php echo $username ?>" placeholder="Enter username" required>
+                    <?php if ($usernameErr) : ?>
+                        <div class="invalid-feedback">
+                            <?= $usernameErr ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -27,7 +32,12 @@
                 <label for="password" class="form-label fw-bold text-uppercase">Password:</label>
                 <div class="input-group">
                     <span class="input-group-text text-primary"><i class="fas fa-key"></i></span>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+                    <input type="password" name="password" id="password" class="form-control <?= $passwordErr ? 'is-invalid' : '' ?>" placeholder="Enter password" required>
+                    <?php if ($passwordErr) : ?>
+                        <div class="invalid-feedback">
+                            <?= $passwordErr ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 
