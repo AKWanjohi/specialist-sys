@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             setSession($user['id'], $user['name'], $rank);
 
             header("Location: /");
+            exit;
         } else {
             $message = "You have entered an incorrect password.";
             $username = $_POST['username'];

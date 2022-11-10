@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         setSession($user_id, $_POST['username'], $user_type);
 
         header("Location: /");
+        exit;
     } else {
         $message = "A user with the same username exists.";
     }
