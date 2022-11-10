@@ -1,5 +1,7 @@
 <?php
 
+checkIfLoggedIn();
+
 $message = "";
 $user_type = "";
 
